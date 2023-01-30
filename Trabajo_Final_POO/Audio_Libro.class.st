@@ -37,7 +37,7 @@ libro setTipo: false.
 Audio_Libro >> aTexto [ 
 |text|.
 text:=super aTexto.
-text:=text,'AUDIO LIBRO',String cr,'Duracion: ',duracion asString ,String cr.
+text:=text,'AUDIO LIBRO',String cr,'Duracion: ',duracion ,String cr.
 ^text.
 ]
 

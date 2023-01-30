@@ -16,6 +16,29 @@ boton inicializadorBoton_name: nom yDimension:dimen  yColor: col.
 ^boton .
 ]
 
+{ #category : #propios }
+BotonAccion >> cambiarNombre: unNombre [
+self label:unNombre.
+]
+
+{ #category : #propios }
+BotonAccion >> inicializadorBoton_name: nomb yDimension: dim yColor:col [
+
+self label:nomb  .
+self extent: dim.
+self color: (Color pink alpha: 0.5).
+
+
+]
+
+{ #category : #propios }
+BotonAccion >> initialize [
+
+super initialize.
+
+self color:Color red.
+]
+
 { #category : #'event handling' }
 BotonAccion >> mouseAction: aBlock [
 bloqueAccion  := aBlock.

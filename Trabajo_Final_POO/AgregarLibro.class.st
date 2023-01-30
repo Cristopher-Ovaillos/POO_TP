@@ -92,6 +92,7 @@ botonAgregar mouseAction:[
 			libro agregarAutores: colA.
 	 		BiblioRe agregarLibro:libro.	
 			"limpio"
+			colA removeAll.
 			self removeMorph: datoExtra .
 			datoNombre clear.
 			datoEditorial clear.
@@ -109,11 +110,12 @@ botonAgregar mouseAction:[
 	((tipoLibro selectedItem)= 'Audio Libro')ifTrue:[
 		libro:=(Audio_Libro crearAudioLibro_nombre:(datoNombre input)  yEditorial:(datoEditorial input)  yAnio_Edicion:(datoAnioEd input)yDuracion:(datoExtra input)) .	
 		]. 	
-		
+			
 			libro agregarAutores: colA.
 	 		BiblioRe agregarLibro:libro.	
 			"limpio"
 			self removeMorph: datoExtra .
+			colA removeAll.
 			datoExtra clear.
 			datoNombre clear.
 			datoEditorial clear.
