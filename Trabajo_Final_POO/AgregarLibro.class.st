@@ -22,7 +22,8 @@ Class {
 
 { #category : #accessing }
 AgregarLibro >> agregarBotones [
-|advertencia colA string libro|.
+|advertencia colA string libro exito|.
+exito:=false.
 string:=''.
 colA:=OrderedCollection new.
 advertencia :=StringMorph new.
@@ -39,7 +40,9 @@ self addMorph:botonAgregar.
 self addMorph:botonTipo.
 self addMorph:advertencia.
 self addMorph:agregarAutor.
-agregarAutor mouseAction: [  
+"ACCION BOTON AGREGAR AUTOR"
+
+	agregarAutor mouseAction: [  
 	(nombreAutor isNotEmpty & apellidoAutor isNotEmpty )ifTrue:[
 		|autor|.
 		autor:=( Autor crearAutor_nombre: (nombreAutor input ) yApellido:(apellidoAutor input)).
@@ -54,53 +57,36 @@ agregarAutor mouseAction: [
 		apellidoAutor clear.
 		].
 	].
+"ACCION BOTON TIPO"
 
-botonTipo mouseAction: [ 
+	botonTipo mouseAction: [ 
 	
-	((tipoLibro selectedItem)= 'Libro electronico')ifTrue:[
-		datoExtra clear.
-		datoExtra ghostText: 'Formato'.
-			self addMorph:datoExtra	
-		].
-	((tipoLibro selectedItem)= 'Libro impreso')ifTrue:[
-		datoExtra clear.
-		datoExtra ghostText: 'Cantidad de paginas'.	
-				self addMorph:datoExtra
-		].
-	((tipoLibro selectedItem)= 'Audio Libro')ifTrue:[
-		datoExtra clear.
-		datoExtra ghostText: 'Duracion'.	
-				self addMorph:datoExtra
-				
-		].
-	datoExtra position:tipoLibro position + (0@40).
+	tipoLibro selectedItem = 'Libro electronico' 
+    ifTrue: [      datoExtra clear.      datoExtra ghostText: 'Formato'.      self addMorph: datoExtra.    ].
+  tipoLibro selectedItem = 'Libro impreso' 
+    ifTrue: [      datoExtra clear.      datoExtra ghostText: 'Cantidad de paginas'.      self addMorph: datoExtra.    ].
+  tipoLibro selectedItem = 'Audio Libro' 
+    ifTrue: [      datoExtra clear.      datoExtra ghostText: 'Duracion'.      self addMorph: datoExtra.    ].
+  datoExtra position: tipoLibro position + (0@40).
 	
 	 ].
+
+"ACCION BOTON AGREGAR"
+
 botonAgregar mouseAction:[
 	(datoNombre isNotEmpty  & datoEditorial isNotEmpty & datoAnioEd isNotEmpty & ((tipoLibro selectedItem)isNotNil)& (colA isNotEmpty) )ifTrue:[
 		
 		(MiSistema verSiEsFecha:(datoAnioEd input))ifTrue:[
-			
-			"seteo el registro de autores"
-			registroAutor setText:''.
 			 "es una fecha"
-	self removeMorph: advertencia.
-	
+			self removeMorph: advertencia.
+			
 	((tipoLibro selectedItem)='Libro fisico')ifTrue:[
 		libro:=Libro crearLibro_nombre: (datoNombre input) yEditorial:(datoEditorial input)  yAnio_Edicion:(datoAnioEd input).
-		
-			libro agregarAutores: colA.
-	 		BiblioRe agregarLibro:libro.	
-			"limpio"
-			colA removeAll.
-			self removeMorph: datoExtra .
-			datoNombre clear.
-			datoEditorial clear.
-			datoAnioEd clear.	
-
+		exito:=true.
 		]ifFalse:[
-		
 		(datoExtra isNotEmpty)ifTrue:[
+			"se introdujo el dato"
+			exito:=true.
 		((tipoLibro selectedItem)= 'Libro electronico')ifTrue:[
 		libro:=(Libro_Electronico crearLibroElectronico_nombre:(datoNombre input)  yEditorial:(datoEditorial input)  yAnio_Edicion:(datoAnioEd input)yFormato:(datoExtra input)).
 		]. 
@@ -110,26 +96,37 @@ botonAgregar mouseAction:[
 	((tipoLibro selectedItem)= 'Audio Libro')ifTrue:[
 		libro:=(Audio_Libro crearAudioLibro_nombre:(datoNombre input)  yEditorial:(datoEditorial input)  yAnio_Edicion:(datoAnioEd input)yDuracion:(datoExtra input)) .	
 		]. 	
-			
+		"fin"	
+			].
+		"fin ifFalse:"
+		].
+	"si se completo todos los datos exito es true"
+	exito ifTrue:[
+		"elimino todo los componentes en comun o sentencias"
+			exito:=false.
 			libro agregarAutores: colA.
 	 		BiblioRe agregarLibro:libro.	
 			"limpio"
-			self removeMorph: datoExtra .
+			self removeMorph: datoExtra.
+			registroAutor setText:''.
 			colA removeAll.
+			string :=''.
 			datoExtra clear.
 			datoNombre clear.
 			datoEditorial clear.
-			datoAnioEd clear.			
-			].
-		].	
+			datoAnioEd clear.		
+		].
+		
 		
 	 ]ifFalse:[
 		"no es una fecha"
 		advertencia contents:'No es una fecha'.
 		self addMorph:advertencia.
 		].	
-		].
+	"FIN DEL MENSAJE MiSistema verSiEsFecha:(datoAnioEd input)"	
 	].
+].
+"FIN "
 atras mouseAction: [ Modificar_bibliteca crearOpcion_titulo:(BiblioRe getNombreEstablecimiento)  yBiblioteca:BiblioRe.self cerrar ].
 
 
