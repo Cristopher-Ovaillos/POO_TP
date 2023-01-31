@@ -77,7 +77,7 @@ cAudioLibro:=colLibro reject:[:libro| libro getTipo].
 ""
 self metodoAux_Crear: cLibro yUsuario: unUsuario .
 
-(unUsuario getTipo  )ifFalse:[
+(unUsuario getTipo)ifFalse:[
 	"es plus"
 	self metodoAux_Crear: cAudioLibro yUsuario: unUsuario .
 	].
@@ -87,7 +87,10 @@ self metodoAux_Crear: cLibro yUsuario: unUsuario .
 
 { #category : #propios }
 Biblioteca >> devolverPrestamo_Usuario: unUsuario [ 
-"devuelve la instancia del prestamo que hizo el usuario"
+"devuelve la instancia del prestamo que hizo el usuario.
+
+select: y thenCollect: es un mensaje que se envía a una colección (como un Array) y retorna una nueva colección con los elementos que cumplen con el criterio especificado. En lugar de retornar una copia, retorna una instancia de la misma colección original
+"
 ^(colPrestamoActivo) select: [:pres| pres verEstadoUsuario: unUsuario] thenCollect: [:each | each].
 ]
 
@@ -156,10 +159,9 @@ diasParaPrestar :=dPrestar.
 
 { #category : #propios }
 Biblioteca >> metodoAux_Crear:cLibro yUsuario:unUsuario [
-|nuevoPrest|.
+
 ((cLibro notEmpty ) & ((cLibro size)<=5))ifTrue:[
-nuevoPrest :=Prestamo crearP_ColLibro: cLibro  yFPrest:(Date today) yUsuario: unUsuario .
-self agregarPrestamo: nuevoPrest.	
+self agregarPrestamo: (Prestamo crearP_ColLibro: cLibro  yFPrest:(Date today) yUsuario: unUsuario) .	
 	].
 
 

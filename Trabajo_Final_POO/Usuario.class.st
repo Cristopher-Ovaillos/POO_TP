@@ -147,15 +147,11 @@ contraseña :=pass .
 Usuario >> verMulta [
 | estaMultado |.
 estaMultado := false.
-(fechaMulta isNil)ifTrue: [
-	"osea no esta multado"
-	 estaMultado := false ] ifFalse: [
-	((fechaMulta) < (Date today)) ifTrue: [
-		"ya termino la multa"
-		estaMultado := true
-	] ifFalse: [
-		estaMultado := false
-	]
+fechaMulta ifNotNil: [
+  (fechaMulta < Date today) ifTrue: [
+    estaMultado := true
+  ]
 ].
 ^ estaMultado
+
 ]
