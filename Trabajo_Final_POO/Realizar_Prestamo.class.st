@@ -33,21 +33,20 @@ self addMorph:botonPrestamo.
 	self removeMorph: botonPrestamo;removeMorph: listaBInteres .
 		]
 	].
-atras mouseAction: [ Acciones_Usuario crearOpcion_titulo: (UsuarioRecibido  getNombre) yUsuario: UsuarioRecibido .
+atras mouseAction: [ Acciones_Usuario crearVentana_titulo: (UsuarioRecibido  getNombre) .
 self cerrar. ].
 ]
 
 { #category : #initialization }
 Realizar_Prestamo >> initialize [ 
 super initialize .
-registro position:(760@480).
 self agregarBotones .
 
 ]
 
 { #category : #propios }
 Realizar_Prestamo >> realizarPrestamo_bibliteca: biblio [
-|lista listaLibro prest  contadorLibro contadorAudio puedePrestamo terminarPrestamo|.
+|lista listaLibro  librosSeleccionados contadorLibro contadorAudio puedePrestamo terminarPrestamo |.
 contadorLibro :=0.
 contadorAudio :=0.
 puedePrestamo :=true.
@@ -56,17 +55,18 @@ terminarPrestamo :=true.
 error:=StringMorph new.
 error contents:''.
 error position:self position+ (270@200).
-""
-prest:=Prestamo crearPFPrest:(Date today)  yUsuario:UsuarioRecibido.
-"creo un Dictionary donde le paso el nombre de la biblioteca y la biblioteca a la cual corresponde el nombre" 
-prest addDependent: self.
-self update:(prest getColLibro).
+""""
+librosSeleccionados:=OrderedCollection new.
+"creo un Dictionary donde le paso el nombre de la biblioteca y la biblioteca a la cual corresponde el nombre"
+librosSeleccionados  addDependent: self.
+self update:(librosSeleccionados).
 lista :=Dictionary new.
 (biblio getColLibro)do:[:libro|	lista at:(libro aTexto)put:libro].
-listaLibro:=SearchMorph new.
+listaLibro:=SeleccionarOpcion new.
 listaLibro extent:410@60;searchList: (lista keys). 
 listaLibro position:self position + (50@120).
-listaLibro ghostText: 'SELECCIONA EL LIBRO A ELIMINAR'.
+listaLibro ghostText: 'SELECCIONA EL LIBRO PARA AGREGAR AL PRESTAMO'.
+registro position: listaLibro position +(0@70).
 "boton"
 elegirLibro  :=BotonAccion crearBoton_nomb: 'Agregar a Presta' yDimension:115@20  yColor: Color pink.
 elegirLibro  position: self position + (370@415).
@@ -76,16 +76,20 @@ terminarElegir  position: self position + (240@415).
 self addMorph:elegirLibro;addMorph:listaLibro;addMorph:terminarElegir.
 "accion boton"
 "NOTIFICACIONES"
-(biblio verUsuarioRealizoPrestamo: UsuarioRecibido )ifTrue: [  
-	error contents:'EL USUARIO YA REALIZO UN PRESTAMO'.
-	self addMorph:error.
-	terminarPrestamo :=false.
+(biblio verUsuarioRealizoPrestamo:UsuarioRecibido)ifTrue: [  
+		error contents:'EL USUARIO YA REALIZO UN PRESTAMO'.
+		self addMorph:error.
+		terminarPrestamo :=false.
+	
 	] ifFalse: [
-	elegirLibro mouseAction: [  
+	
+	elegirLibro mouseAction: [
+		
+	  
 		"veo el item seleccionado no es nulo"
 	(listaLibro selectedItem isNotNil)ifTrue:[
-		(UsuarioRecibido getTipo)ifTrue: [ 
-			(((lista at:(listaLibro selectedItem )))getTipo)ifTrue: [  
+		(UsuarioRecibido tipoUsuario )ifTrue: [ 
+			(((lista at:(listaLibro selectedItem )))tipoLibro )ifTrue: [  
 				"esLibro"
 				(contadorLibro >=5)ifTrue:[
 					"supero el max"
@@ -101,7 +105,7 @@ self addMorph:elegirLibro;addMorph:listaLibro;addMorph:terminarElegir.
 				]
 			 ] ifFalse: [ 
 			"usuario plus"
-			((lista at:(listaLibro selectedItem))getTipo)ifTrue: [  
+			((lista at:(listaLibro selectedItem))tipoLibro)ifTrue: [  
 				"esLibro"
 				(contadorLibro >=5)ifTrue:[
 					"supero el max"
@@ -125,7 +129,8 @@ self addMorph:elegirLibro;addMorph:listaLibro;addMorph:terminarElegir.
 		self addMorph:error.
 		(puedePrestamo)ifTrue:[
 			self removeMorph:error.
-   prest agregarLibroPrestamo: (lista at:(listaLibro selectedItem )).
+   librosSeleccionados  add: (lista at:(listaLibro selectedItem)).
+	librosSeleccionados changed.
 	lista removeKey: (listaLibro  selectedItem)  . 
 	listaLibro searchList: (lista keys). 
 			].
@@ -135,16 +140,20 @@ self addMorph:elegirLibro;addMorph:listaLibro;addMorph:terminarElegir.
 ].
 	].
 
-"ya elegi todos los libros"
 terminarElegir mouseAction: [
+(librosSeleccionados isNotEmpty )ifTrue:[
 	terminarPrestamo ifTrue:[
-		(biblio registrarPrestamoUsuario: (prest getUsuarioP) clibros: (prest getColLibro)).
-		Acciones_Usuario crearOpcion_titulo: (UsuarioRecibido  getNombre) yUsuario: UsuarioRecibido.self cerrar.
-		self cerrar.
-		
+		(biblio registrarPrestamoUsuario: UsuarioRecibido  clibros: librosSeleccionados).	
+		Acciones_Usuario crearVentana_titulo:(UsuarioRecibido  getNombre) .self cerrar.
 		]. 
-].
-atras mouseAction: [ Acciones_Usuario crearOpcion_titulo: (UsuarioRecibido  getNombre) yUsuario: UsuarioRecibido.self cerrar ].
+].	
+	].
+
+atras mouseAction: [ Acciones_Usuario crearVentana_titulo:  (UsuarioRecibido  getNombre).self cerrar ].
+
+
+
+
 
 
 ]

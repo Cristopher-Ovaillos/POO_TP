@@ -16,13 +16,8 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-VentanaO class >> crearOpcion_titulo: tit ySistema: sistem [
-|opcion|.
-opcion:=self new.
-opcion agregarSistema: sistem.
-opcion agregarTitulo: tit.
-opcion openCenteredInWorld.
-
+VentanaO class >> asignarSistema:unSistema [
+MiSistema :=unSistema.
 ]
 
 { #category : #'as yet unclassified' }
@@ -30,8 +25,7 @@ VentanaO class >> crearVentana_titulo: tit [
 |opcion|.
 opcion:=self new.
 opcion agregarTitulo: tit.
-
-opcion openInWorld .
+opcion openCenteredInWorld.
 ]
 
 { #category : #propios }
@@ -96,10 +90,8 @@ cerrar mouseAction: [ self cerrar ].
 { #category : #updating }
 VentanaO >> update: unObjeto [
 "en Smalltalk Pharo significa que un objeto se hace de solo lectura, lo que significa que su estado no se puede modificar. Una vez que un objeto se hace de solo lectura, cualquier intento de cambiar su estado generará una excepción."
-(unObjeto isEmpty)ifTrue: [
-	registro setText: 'Esperando datos'.]
-ifFalse:[
-		registro setText:(MiSistema colATexto: unObjeto)asString.
+(unObjeto)ifEmpty:[registro setText: 'Esperando datos'.]ifNotEmpty: [
+		registro setText:(MiSistema colATexto:unObjeto)asString.
 ].
 self addMorph:registro.
 

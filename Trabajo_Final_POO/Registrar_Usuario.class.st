@@ -15,7 +15,6 @@ Class {
 { #category : #accessing }
 Registrar_Usuario >> agregarBotones [
 |error pos|.
-""
 "creo los campos para introducir datos"
 pos:=50@50.
 cajaOpcion := BotonSeleccionar crearBSeleccionar_Nombre: 'Desea ser plus' tamanio: 20@20.
@@ -60,23 +59,30 @@ botonRegistrar mouseAction: [
 		(cajaOpcion verEstado) ifTrue:[
 			self removeMorph: error.
 			"selecciono osea quiere ser plus"
-			usuario :=(UsuarioPlus crearUPlus_nombre:(datoNombre input )  yApellido: (datoApellido input) yDni:(datoDni input)  yContraseña:(datoContraseña input )).
-			
-					
+			usuario :=(UsuarioPlus 
+						crearUPlus_nombre:(datoNombre input)  
+						yApellido: (datoApellido input) 
+						yDni:(datoDni input)  
+						yContraseña:(datoContraseña input )).	
 			] ifFalse:[
 			"no selecciono quiere ser usuario no plus"
-			usuario :=(Usuario crearU_nombre:(datoNombre input )  yApellido: (datoApellido input) yDni:(datoDni input)  yContraseña:(datoContraseña input )).
+			usuario :=(Usuario 
+						crearU_nombre:(datoNombre input )  
+						yApellido: (datoApellido input) 
+						yDni:(datoDni input) 
+						 yContraseña:(datoContraseña input)).
 						
 			].	
-			MiSistema agregarUsuario:usuario.
-			Acciones_Usuario crearOpcion_titulo: (usuario getNombre) yUsuario: usuario .
+			MiSistema agregarUsuario: usuario .
+			Opciones_Usuario asignarUsuario:usuario.
+			Acciones_Usuario crearVentana_titulo:(usuario getNombre) .
 self cerrar.	
 			].
 		
 		].
 	
 	].
-atras mouseAction: [ IU_usuario crearOpcion_titulo: 'USUARIO' ySistema: MiSistema   .self cerrar. ].
+atras mouseAction: [ IU_usuario crearVentana_titulo: 'USUARIO'  .self cerrar. ].
 ]
 
 { #category : #propios }
@@ -107,5 +113,4 @@ MiSistema addDependent: self.
 self update: (MiSistema getColUsuario).
 self agregarBotones.
 self agregarTitulos .
-
 ]

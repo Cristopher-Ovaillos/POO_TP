@@ -33,16 +33,37 @@ UsuarioPlus class >> crearUPlus_nombre: nomb yApellido:ape yDni:numDni yContrase
 |usuarioP|.
 usuarioP :=self new.
 usuarioP inicializadorUsuario_nombre: nomb yApellido:ape yDni:numDni yContraseña:pass.
-usuarioP cambiarTipo: false.
 usuarioP iniciarFechaVencimientoCuota.
 ^usuarioP.
 ]
 
 { #category : #propios }
-UsuarioPlus >> comparar_DNI: numDni [
+UsuarioPlus >> iniciarFechaVencimientoCuota [
+"cuando se crea una instancia de usuarioPlus la fechaVencimientoCuota es la fecha actual 
+donde se crea mas 30 dias"
+fechaVencimientoCuota := Date today + 30 days.
+]
+
+{ #category : #propios }
+UsuarioPlus >> noCumpleCondiciones_DNI: numDni [
 |realizoPrest|.
 "polimorfismo por refinamiento"
-realizoPrest:=super comparar_DNI: numDni.
+realizoPrest:=super noCumpleCondiciones_DNI: numDni.
+"da falso porque no hizo prestamo"
+(realizoPrest)ifFalse:[
+	(self vencioCuota)ifTrue:[
+		"vencio la cuota entonces no puede realizar el prestamo ya que no esta al dia entonces no es apto por eso el true"
+		realizoPrest :=true.
+		]. 
+	].
+^realizoPrest .
+]
+
+{ #category : #propios }
+UsuarioPlus >> realizoPrestamo_DNI: numDni [
+|realizoPrest|.
+"polimorfismo por refinamiento"
+realizoPrest:=super noCumpleCondiciones_DNI: numDni.
 
 (realizoPrest)ifTrue:[
 	(self vencioCuota)ifTrue:[
@@ -53,11 +74,9 @@ realizoPrest:=super comparar_DNI: numDni.
 ^realizoPrest .
 ]
 
-{ #category : #propios }
-UsuarioPlus >> iniciarFechaVencimientoCuota [
-"cuando se crea una instancia de usuarioPlus la fechaVencimientoCuota es la fecha actual 
-donde se crea mas 30 dias"
-fechaVencimientoCuota := Date today + 30 days.
+{ #category : #accessing }
+UsuarioPlus >> tipoUsuario [ 
+^false.
 ]
 
 { #category : #propios }

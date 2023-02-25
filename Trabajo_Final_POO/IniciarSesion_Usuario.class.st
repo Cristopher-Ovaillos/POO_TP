@@ -39,17 +39,17 @@ titulo1 position:ingresarDni position - (0@30).
 titulo2 position:ingresarContraseña position - (0@30).
 
 botonSesion mouseAction: [
-	(MiSistema iniciarSesion_Dni:(ingresarDni input )  yContraseña:(ingresarContraseña input )) ifTrue: [
+	(MiSistema iniciarSesion_Dni:(ingresarDni input )  yContraseña:(ingresarContraseña input )) 	ifTrue: [
 		"pudo ingresar a su cuenta"
-Acciones_Usuario crearOpcion_titulo:'Opciones' yUsuario: (MiSistema devolverUsuario_dni:(ingresarDni input) ).
-		self cerrar.
-		]ifFalse: [
-		self addMorph: incorrecto.
-		incorrecto position:ingresarContraseña position + (0@80).  
-		].
-].
-
-atras mouseAction: [ IU_usuario crearOpcion_titulo: 'USUARIO' ySistema: MiSistema.self cerrar. ].
+					Opciones_Usuario asignarUsuario: (MiSistema retornarUsuario_dni:(ingresarDni input)).
+					Acciones_Usuario crearVentana_titulo:'OPCIONES'.
+					self cerrar.
+				]ifFalse: [
+					self addMorph: incorrecto.
+					incorrecto position:ingresarContraseña position + (0@80).  
+							 ].
+			].
+atras mouseAction: [ IU_usuario crearVentana_titulo:  'USUARIO' .self cerrar. ].
 
 
 

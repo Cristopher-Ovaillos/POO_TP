@@ -31,10 +31,17 @@ botonRegistrar mouseAction: [
 			"ESTAN RELLENOS"
 		|biblio|.
 		
-		biblio :=Biblioteca crearBiblioteca_id: (datoIdentificador input) yDireccion:(datoDireccion input)  yNombre: (datoNombreE input) yTelContacto:(datoTelCont input) yRepresentante:(datoNombRepresentante input ) yDiasParaPrestar: (datoDiasParaPrestar input).
+		biblio :=Biblioteca 
+					crearBiblioteca_id: (datoIdentificador input) 
+					yDireccion:(datoDireccion input)  
+					yNombre: (datoNombreE input) 
+					yTelContacto:(datoTelCont input) 
+					yRepresentante:(datoNombRepresentante input ) 
+					yDiasParaPrestar: (datoDiasParaPrestar input).
+					
+		Opciones_Biblioteca asignarBiblioteca: biblio.
 		MiSistema agregarBiblioteca: biblio.
-		Modificar_bibliteca crearOpcion_titulo:(datoNombreE input)   yBiblioteca: biblio .
-		
+		Modificar_bibliteca crearVentana_titulo:(datoNombreE input).
 		self cerrar .
 			 ] ifFalse: [ 
 			""
@@ -44,7 +51,7 @@ botonRegistrar mouseAction: [
 		].
 	 ].
 
-atras mouseAction: [ IU_biblioteca   crearOpcion_titulo: 'BIBLIOTECA' ySistema: MiSistema  .self cerrar. ].
+atras mouseAction: [ IU_biblioteca crearVentana_titulo:  'BIBLIOTECA' .self cerrar. ].
 ]
 
 { #category : #propios }
@@ -67,7 +74,7 @@ titulo6 position: datoDiasParaPrestar  position -(0@20).
 ]
 
 { #category : #propios }
-Registrar_Biblioteca >> añadorCampos [
+Registrar_Biblioteca >> añadirCampos [
 |pos|.
 pos:=20@50.
 "campos"
@@ -92,7 +99,7 @@ addMorph:datoIdentificador;addMorph:datoDireccion;addMorph:datoNombreE;addMorph:
 { #category : #initialization }
 Registrar_Biblioteca >> initialize [
 super initialize.
-self añadorCampos;agregarTitulos .
+self añadirCampos;agregarTitulos .
 MiSistema addDependent: self.
 "cargo los usuarios que tengo registrado"
 self update: (MiSistema getBibliotecas).

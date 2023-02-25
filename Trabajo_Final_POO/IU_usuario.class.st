@@ -18,8 +18,8 @@ self addMorph: botonRegistrarse.
 botonIniciarSesion position:50@155.
 botonRegistrarse position: botonIniciarSesion position + (0@80).
 "accion botones"
-botonIniciarSesion mouseAction: [ IniciarSesion_Usuario crearOpcion_titulo: 'Iniciar Sesion' ySistema:  MiSistema. self cerrar ].
-botonRegistrarse  mouseAction: [ Registrar_Usuario crearOpcion_titulo: 'Registrar usuarios' ySistema:MiSistema. self cerrar ].
+botonIniciarSesion mouseAction: [ IniciarSesion_Usuario crearVentana_titulo:  'Iniciar Sesion'. self cerrar ].
+botonRegistrarse  mouseAction: [ Registrar_Usuario crearVentana_titulo:  'Registrar usuarios'. self cerrar ].
 atras mouseAction: [  MenuPrincipal crearMenu_sistema:MiSistema. self cerrar].
 ]
 

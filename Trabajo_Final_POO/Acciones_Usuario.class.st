@@ -31,7 +31,7 @@ botonInformacion position: botonTipo position +(0@60).
 nota position:botonInformacion position +(0@60)-(25@0).
     self addMorph:botonAgregar; addMorph:botonTipo;addMorph:botonPrestamo;addMorph:botonDevolver;addMorph:nota;addMorph: botonInformacion .
 
-botonAgregar mouseAction: [  Agregar_BibliotecaInteres crearOpcion_titulo: ('Agregar biblioteca de interes a ',UsuarioRecibido getNombre)  yUsuario: UsuarioRecibido.
+botonAgregar mouseAction: [  Agregar_BibliotecaInteres crearVentana_titulo: ('Agregar biblioteca de interes a ',UsuarioRecibido getNombre).
 
 self cerrar.
 
@@ -39,20 +39,20 @@ self cerrar.
 "si quiero cambiar el tipo"
 botonTipo mouseAction: [
     MiSistema cambiarTipoUsuario_Usuario: UsuarioRecibido .
-	IU_usuario crearOpcion_titulo: 'USUARIO' ySistema: MiSistema   .self cerrar.
+	IU_usuario crearVentana_titulo: 'USUARIO'  .self cerrar.
     self cerrar.
          ].
     botonPrestamo mouseAction: [
-        Realizar_Prestamo crearOpcion_titulo: ('Prestamo')  yUsuario: UsuarioRecibido.self cerrar.
+        Realizar_Prestamo crearVentana_titulo: ('PRESTAMO')  .self cerrar.
 
         ].
     botonInformacion mouseAction: [ 
-        Informacion_Usuario crearOpcion_titulo: 'INFORMACION SOBRE USUARIO' yUsuario: UsuarioRecibido .self cerrar.
+        Informacion_Usuario crearVentana_titulo:'INFORMACION SOBRE USUARIO' .self cerrar.
          ].
 botonDevolver mouseAction: [  
-	Devolver_Prestamo crearOpcion_titulo: 'PRESTAMO USUARIO' yUsuario:UsuarioRecibido. self cerrar.
+	Devolver_Prestamo crearVentana_titulo:'PRESTAMO USUARIO' . self cerrar.
 	].
-atras mouseAction: [ IU_usuario crearOpcion_titulo: 'USUARIO' ySistema: MiSistema   .self cerrar. ].
+atras mouseAction: [ IU_usuario crearVentana_titulo: 'USUARIO'   .self cerrar. ].
 
 ]
 

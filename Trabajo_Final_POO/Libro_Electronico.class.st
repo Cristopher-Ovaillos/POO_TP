@@ -37,7 +37,7 @@ libro agregarFormato: f.
 Libro_Electronico >> aTexto [ 
 |text|.
 text:=super aTexto.
-text:=text,'LIBRO ELECTRONICO',String cr,'Formato: ',formato asString,String cr.
+text:='LIBRO ELECTRONICO',String cr,text,'Formato: ',formato asString,String cr.
 ^text.
 ]
 

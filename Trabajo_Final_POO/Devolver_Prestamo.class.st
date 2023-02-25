@@ -35,12 +35,13 @@ self addMorph:listaBInteres;addMorph:elegirBiblioteca.
 		]
 	
 	].
-atras mouseAction: [ Acciones_Usuario crearOpcion_titulo: (UsuarioRecibido  getNombre) yUsuario: UsuarioRecibido.self cerrar ].
+atras mouseAction: [ Acciones_Usuario crearVentana_titulo:(UsuarioRecibido  getNombre).self cerrar ].
 ]
 
 { #category : #propios }
 Devolver_Prestamo >> devolverPrestamo_Biblioteca:unaBiblio [
-|texto listaPrestamo prestamo listaPrestAudio |.
+|texto listaPrestamo listaPrestAudio auxiliar1 auxiliar2 sumar |.
+sumar:=(MiSistema getMultaKDias)asNumber. 
 ""
 ""
 listaPrestamo:= MostrarRegistro crearRegistro_Dimension: 220@250 yPosicion: (self position+(30@60)).
@@ -55,35 +56,43 @@ texto:=StringMorph new.
 texto contents:''.
 texto position:(self position+(100@60)).
 
-botonDevolver1 position:self position+(15@380).
-botonDevolver2 position:self position+(385@380).
+botonDevolver1 position:self position+(15@340).
+botonDevolver2 position:self position+(385@340).
 self addMorph:texto.
-"veo si el usaurio realizo un prestamo en esta biblioteca"
-(unaBiblio verUsuarioRealizoPrestamo: UsuarioRecibido )ifTrue:[
-	"si encontro "
-prestamo :=unaBiblio devolverPrestamo_Usuario: UsuarioRecibido.
-(prestamo isNotEmpty) ifTrue:[
-	
-		listaPrestamo setText:((prestamo at:1) aTexto),String cr,'LIBROS INCLUIDOS1',String cr,(MiSistema colATexto:((prestamo at:1)getColLibro)).
-			self addMorph: listaPrestamo; addMorph:botonDevolver1 .
-			
-		botonDevolver1 mouseAction: [ 
-			unaBiblio eliminarPrestamoActivo: (prestamo at:1).
-			self removeMorph: listaPrestamo;removeMorph: botonDevolver1 .
-			 ].		
-			(prestamo size=2)ifTrue:[
-		listaPrestAudio setText:((prestamo at:2) aTexto),String cr,'LIBROS INCLUIDOS',String cr,(MiSistema colATexto:((prestamo at:2)getColLibro)).
-		self addMorph: listaPrestAudio; addMorph:botonDevolver2 .
-		botonDevolver2 mouseAction: [ 
-			unaBiblio eliminarPrestamoActivo: (prestamo at:2).
-			self removeMorph: listaPrestAudio;removeMorph: botonDevolver2 .
-			 ].				
-				].
-		].
-	]ifFalse:[
+
+(unaBiblio verUsuarioRealizoPrestamo:UsuarioRecibido)ifFalse:[
 	texto contents:'EL USUARIO NO REALIZO EL PRESTAMO EN ESTA BIBLIOTECA'.
 	self addMorph:texto.
+	]ifTrue:[
+	"veo si el usaurio realizo un prestamo en esta biblioteca"
+auxiliar1 :=unaBiblio retornarPrestamo_Usuario: UsuarioRecibido.
+auxiliar2 :=unaBiblio retornarPrestamoAudioLibro_Usuario: UsuarioRecibido.
+auxiliar1 ifNotNil: [ listaPrestamo setText:auxiliar1 aTexto.
+	self addMorph:listaPrestamo;addMorph:botonDevolver1.
+	botonDevolver1 mouseAction: [unaBiblio devolverPrestamo:UsuarioRecibido.
+		(auxiliar1 getFechaLimite<Date today)ifTrue:[
+			
+		"se pasaron del limite"
+		UsuarioRecibido agregarFechaPosibleMulta: ((Date today) + (sumar days) )asDate.
+		].
+	self removeMorph: botonDevolver1 ; removeMorph:listaPrestamo.		
+	
+		].
+	 ].
+auxiliar2 ifNotNil: [listaPrestAudio setText:auxiliar2 aTexto.
+		self addMorph:listaPrestAudio;addMorph:botonDevolver2.
+	botonDevolver2 mouseAction: [ unaBiblio devolverPrestamoAudioLibro: UsuarioRecibido.
+	(auxiliar2 getFechaLimite<Date today)ifTrue:[
+			
+		"se pasaron del limite"
+		UsuarioRecibido agregarFechaPosibleMulta: ((Date today) + (sumar days) )asDate.
+		].		
+			self removeMorph: botonDevolver2 ; removeMorph:listaPrestAudio.	
+		].
+
 	].
+	
+].
  
 
 

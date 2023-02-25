@@ -18,7 +18,6 @@ Class {
 		'nombre',
 		'editorial',
 		'anio_Edicion',
-		'tipo',
 		'colAutores'
 	],
 	#category : #'Trabajo_Final_POO-Modelo'
@@ -37,10 +36,10 @@ Libro >> aTexto [
 |text nombres |.
 nombres:=''.
 (colAutores)ifNil:[
-text:='Nombre: ', nombre asString, String cr, 'Editorial: ',editorial asString, String cr, 'Año edicion: ',(anio_Edicion asString), String cr.
+text:='Nombre: ', nombre asString, String cr, ' Editorial: ',editorial asString, String cr, ' Año edicion: ',(anio_Edicion asString), String cr.
 	]ifNotNil:[
 	"no esta vacio"
-	text:='Nombre: ', nombre asString, String cr, 'Editorial: ',editorial asString, String cr, 'Año edicion: ',(anio_Edicion asString), String cr,'Cant autores: ',(colAutores size)asString, String cr.
+	text:='Nombre: ', nombre asString, String cr, ' Editorial: ',editorial asString, String cr, ' Año edicion: ',(anio_Edicion asString), String cr,' Cant autores: ',(colAutores size)asString, String cr.
 	].
 
 ^text.
@@ -49,26 +48,20 @@ text:='Nombre: ', nombre asString, String cr, 'Editorial: ',editorial asString, 
 
 { #category : #propios }
 Libro >> agregarAutores:autor [
-colAutores :=autor.
+colAutores:=autor.
 self changed:colAutores.
 
-]
-
-{ #category : #modificadores }
-Libro >> getTipo [
-^tipo .
 ]
 
 { #category : #Inicializador }
 Libro >> inicializadorLibro_nombre:name yEditorial:editor yAnio_Edicion:anioEd [
 nombre:=name.
 editorial:=editor.
-anio_Edicion:=anioEd.   
-tipo :=true.
+anio_Edicion:=anioEd. 
+colAutores :=OrderedCollection new.  
 ]
 
-{ #category : #modificadores }
-Libro >> setTipo: cambioTipo [ 
-tipo:=cambioTipo .
-
+{ #category : #'as yet unclassified' }
+Libro >> tipoLibro [
+^true.
 ]

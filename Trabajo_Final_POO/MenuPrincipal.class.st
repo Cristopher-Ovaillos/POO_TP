@@ -29,6 +29,7 @@ menu openCenteredInWorld.
 { #category : #propios }
 MenuPrincipal >> agregarSistema: unSistema [
 miSistema  :=unSistema.
+VentanaO asignarSistema: miSistema.
 ]
 
 { #category : #propios }
@@ -67,9 +68,12 @@ self mostrarBotonesyTitulos .
 
 { #category : #propios }
 MenuPrincipal >> mostrarBotonesyTitulos [
-|titulo|
+|titulo a|
+a:=StringMorph new.
+a contents:'nulo'.
 "titulo"
-titulo:='Sistema Gestor' asMorph.
+titulo:=StringMorph new.
+titulo contents:'Sistema Gestor'.
 "botones"
 botonUsuario:=BotonAccion crearBoton_nomb: 'USUARIO' yDimension:400@50  yColor: Color pink .
 botonBiblioteca:=BotonAccion crearBoton_nomb: 'BIBLIOTECA' yDimension:400@50  yColor: Color pink .
@@ -85,8 +89,8 @@ botonUsuario position: 50@155.
 botonBiblioteca  position: botonUsuario position + (0@80).
 titulo position: 200@15.
 "acciones"
-botonBiblioteca mouseAction: [ IU_biblioteca   crearOpcion_titulo: 'BIBLIOTECA' ySistema: miSistema  .self cerrar.].
-botonUsuario mouseAction: [IU_usuario crearOpcion_titulo: 'USUARIO' ySistema: miSistema   .self cerrar.].
+botonBiblioteca mouseAction: [ IU_biblioteca crearVentana_titulo: 'BIBLIOTECA'.self cerrar.].
+botonUsuario mouseAction: [IU_usuario  crearVentana_titulo: 'USUARIO' .self cerrar.].
 botonCerrar mouseAction: [ self cerrar.].
 
 ]

@@ -29,7 +29,6 @@ Audio_Libro class >> crearAudioLibro_nombre:n yEditorial:ed yAnio_Edicion:aEd yD
 libro:=self new.
 libro inicializadorLibro_nombre: n yEditorial:ed  yAnio_Edicion:aEd.
 libro agregarDuracion: d.
-libro setTipo: false.
 ^libro. 
 ]
 
@@ -37,11 +36,16 @@ libro setTipo: false.
 Audio_Libro >> aTexto [ 
 |text|.
 text:=super aTexto.
-text:=text,'AUDIO LIBRO',String cr,'Duracion: ',duracion ,String cr.
+text:='AUDIO LIBRO',String cr,text,'Duracion: ',duracion ,String cr.
 ^text.
 ]
 
 { #category : #propios }
 Audio_Libro >> agregarDuracion:dur [
 duracion:=dur.
+]
+
+{ #category : #'as yet unclassified' }
+Audio_Libro >> tipoLibro [ 
+^false.
 ]

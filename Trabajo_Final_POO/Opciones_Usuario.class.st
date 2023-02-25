@@ -8,16 +8,13 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-Opciones_Usuario class >> crearOpcion_titulo: tit yUsuario: us [ 
+Opciones_Usuario class >> asignarUsuario:unUsuario [
 |opcion|.
 opcion:=self new.
-opcion recibirUsuario: us.
-
-opcion agregarTitulo: tit.
-opcion openCenteredInWorld.
+opcion asignarUsuario: unUsuario.
 ]
 
 { #category : #'as yet unclassified' }
-Opciones_Usuario >> recibirUsuario: usuario [
+Opciones_Usuario >> asignarUsuario: usuario [
 UsuarioRecibido :=usuario .
 ]

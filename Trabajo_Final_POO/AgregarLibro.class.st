@@ -109,7 +109,7 @@ botonAgregar mouseAction:[
 			"limpio"
 			self removeMorph: datoExtra.
 			registroAutor setText:''.
-			colA removeAll.
+			colA :=nil.
 			string :=''.
 			datoExtra clear.
 			datoNombre clear.
@@ -127,7 +127,7 @@ botonAgregar mouseAction:[
 	].
 ].
 "FIN "
-atras mouseAction: [ Modificar_bibliteca crearOpcion_titulo:(BiblioRe getNombreEstablecimiento)  yBiblioteca:BiblioRe.self cerrar ].
+atras mouseAction: [ Modificar_bibliteca crearVentana_titulo:(BiblioRe getNombreEstablecimiento) .self cerrar ].
 
 
 ]

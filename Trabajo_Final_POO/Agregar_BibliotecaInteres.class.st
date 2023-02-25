@@ -19,7 +19,7 @@ lista:=Dictionary new.
 "creo un dictionary "
 listaBiblioteca :=SearchMorph new.
 "este dictionary va estar compuesto por bibliotecas del sistema"
-((MiSistema getBibliotecas))do:[:biblioteca| lista at:(biblioteca getNombreEstablecimiento  )put:biblioteca].
+(MiSistema getBibliotecas)do:[:biblioteca| lista at:(biblioteca getNombreEstablecimiento)put:biblioteca].
 listaBiblioteca extent:410@60;searchList: (lista keys). 
 listaBiblioteca position:40@250.
 listaBiblioteca ghostText: 'SELECCIONA UNA BIBLIOTECA'.
@@ -48,7 +48,7 @@ botonAgregar mouseAction: [
 		self cerrar.
 		].
 	 ].
-atras mouseAction: [ Acciones_Usuario crearOpcion_titulo: (UsuarioRecibido  getNombre) yUsuario: UsuarioRecibido.self cerrar ].
+atras mouseAction: [ Acciones_Usuario crearVentana_titulo:(UsuarioRecibido  getNombre) .self cerrar ].
 
 
 ]
@@ -56,8 +56,10 @@ atras mouseAction: [ Acciones_Usuario crearOpcion_titulo: (UsuarioRecibido  getN
 { #category : #initialization }
 Agregar_BibliotecaInteres >> initialize [ 
 
+
 super initialize .
 UsuarioRecibido  addDependent:self .
 self update:(UsuarioRecibido getBibliotecaInteres).
 self agregarBotones .
+
 ]

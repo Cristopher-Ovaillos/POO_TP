@@ -8,12 +8,10 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-Opciones_Biblioteca class >> crearOpcion_titulo: tit yBiblioteca: b [
+Opciones_Biblioteca class >> asignarBiblioteca:b [
 |opcion|.
 opcion:=self new.
 opcion recibirBiblioteca: b.
-opcion agregarTitulo: tit.
-opcion openCenteredInWorld.
 ]
 
 { #category : #propio }

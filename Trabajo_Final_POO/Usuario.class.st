@@ -20,7 +20,6 @@ Class {
 		'nombre',
 		'fechaMulta',
 		'apellido',
-		'tipoUsuario',
 		'dni',
 		'contraseña'
 	],
@@ -32,7 +31,6 @@ Usuario class >> crearU_nombre: nomb yApellido:ape yDni:numDni yContraseña:pass
 |usuario|.
 usuario :=self new.
 usuario inicializadorUsuario_nombre: nomb yApellido:ape yDni:numDni yContraseña:pass.
-usuario cambiarTipo: true.
 ^usuario .
 ]
 
@@ -44,17 +42,22 @@ a:=self verMulta.
 
 (a)ifTrue:[
 	"tiene multa"
-	b:='Fecha fin multa', fechaMulta asString ,String cr, 'tiene multa'. ]
+	b:='Fecha fin multa: ', fechaMulta asString ,String cr, 'tiene multa'. ]
 ifFalse: [
 	"no tiene multa"
 	b:='no tiene multa'. 
 	fechaMulta :=nil].
 
 
-tipoUsuario ifTrue: [ tipo:='USUARIO NO PLUS' ].
+self tipoUsuario  ifTrue: [ tipo:='USUARIO NO PLUS' ].
 
 
-texto:='Nombre: ',nombre asString,String cr,'Apellido: ',apellido asString ,String cr,'DNI: ',dni asString,String cr,tipo ,String cr,'Cantidad de Bibliotecas Agregadas: ',(colBibibliotecaInter size)asString,String cr,b,String cr. 
+texto:='Nombre: ',nombre asString,String cr,
+		 'Apellido: ',apellido asString ,String cr,
+		 'DNI: ',dni asString,String cr,
+		 tipo ,String cr,
+		'Cantidad de Bibliotecas Agregadas: ',(colBibibliotecaInter size)asString,String cr,
+		 b,String cr. 
 
 
 
@@ -64,7 +67,7 @@ texto:='Nombre: ',nombre asString,String cr,'Apellido: ',apellido asString ,Stri
 { #category : #propios }
 Usuario >> actualizarColBiblioteca: unaCol [
 "esto lo hago para cuando hago un cambio de usuario este mantenga la misma coleccion de biblioteca que tuvo interes"
-colBibibliotecaInter:=unaCol .
+colBibibliotecaInter:=unaCol.
 
 ]
 
@@ -77,29 +80,13 @@ self changed:colBibibliotecaInter.
 
 { #category : #propios }
 Usuario >> agregarFechaPosibleMulta:unaFecha [
-fechaMulta :=unaFecha asDate.
+fechaMulta :=unaFecha.
 ]
 
 { #category : #propios }
 Usuario >> buscarUsuario_Dni: num yContraseña: password [ 
 
 ^ (((dni)=num)&((contraseña)=password)). 
-]
-
-{ #category : #propios }
-Usuario >> cambiarTipo: tipoU [
-tipoUsuario :=tipoU .
-self changed.
-]
-
-{ #category : #propios }
-Usuario >> comparar_DNI: numDni [
-|realizoPrest|.
-realizoPrest :=false.
-"este metodo se usa para saber si el numDni que viene por parametro que se lo envia la clase prestamo es igual al dni del usuario... osea si es igual es porque ya realizo un prestamo"
-(dni = numDni )ifTrue: [ realizoPrest :=true ].
-^realizoPrest .
-
 ]
 
 { #category : #Visualizadores }
@@ -128,11 +115,6 @@ Usuario >> getNombre [
 ^nombre .
 ]
 
-{ #category : #Visualizadores }
-Usuario >> getTipo [ 
-^tipoUsuario.
-]
-
 { #category : #Inicializador }
 Usuario >> inicializadorUsuario_nombre: nomb yApellido:ape yDni:numDni yContraseña:pass [
 colBibibliotecaInter :=OrderedCollection new.
@@ -144,14 +126,32 @@ contraseña :=pass .
 ]
 
 { #category : #propios }
+Usuario >> noCumpleCondiciones_DNI: numDni [
+|realizoPrest|.
+realizoPrest :=false.
+"este metodo se usa para saber si el numDni que viene por parametro que se lo envia la clase prestamo es igual al dni del usuario... osea si es igual es porque ya realizo un prestamo"
+(dni = numDni)ifTrue: [ realizoPrest:=true ].
+^realizoPrest .
+
+]
+
+{ #category : #accessing }
+Usuario >> tipoUsuario [ 
+^true.
+]
+
+{ #category : #propios }
 Usuario >> verMulta [
-| estaMultado |.
+"fechaMulta es una variable que indica hasta que dia esta multado"
+|estaMultado|.
 estaMultado := false.
+"si no es nulo entonces no esta multado"
 fechaMulta ifNotNil: [
-  (fechaMulta < Date today) ifTrue: [
-    estaMultado := true
+"si el dia de hoy no supera a la fecha de multa entonces esta multado"
+  (fechaMulta > Date today) ifTrue: [
+    estaMultado := true.
   ]
 ].
-^ estaMultado
+^ estaMultado.
 
 ]

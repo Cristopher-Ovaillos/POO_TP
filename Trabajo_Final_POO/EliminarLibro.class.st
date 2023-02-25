@@ -38,7 +38,7 @@ botonEliminar mouseAction: [
 	listaLibro searchList: (lista keys). 
 	]	
 	].
-atras mouseAction: [ Modificar_bibliteca crearOpcion_titulo:(BiblioRe getNombreEstablecimiento)  yBiblioteca:BiblioRe.self cerrar ].
+atras mouseAction: [ Modificar_bibliteca crearVentana_titulo:(BiblioRe getNombreEstablecimiento) .self cerrar ].
 
 
 ]

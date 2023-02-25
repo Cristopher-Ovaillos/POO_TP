@@ -14,7 +14,7 @@ Class {
 { #category : #propios }
 IU_biblioteca >> agregarBotones [ 
 
-bibliotecaSistema:=BotonAccion crearBoton_nomb: 'MODIFICAR BIBLIOTECA' yDimension:400@50  yColor: Color pink.
+bibliotecaSistema:=BotonAccion crearBoton_nomb: 'ACCEDER A BIBLIOTECA' yDimension:400@50  yColor: Color pink.
 registrarBibliteca:=BotonAccion crearBoton_nomb: 'REGISTRAR BIBLIOTECA' yDimension:400@50  yColor: Color pink.
 "POSICION Y AÑADIR AL MORPH"
 
@@ -24,9 +24,9 @@ bibliotecaSistema position: registrarBibliteca position + (0@80).
 
 "ACCION BOTON"
 
-registrarBibliteca mouseAction: [ Registrar_Biblioteca crearOpcion_titulo: 'Registrar Biblioteca' ySistema: MiSistema.
+registrarBibliteca mouseAction: [ Registrar_Biblioteca crearVentana_titulo:  'REGISTRAR BIBLIOTECA'.
 	self cerrar.  ].
-bibliotecaSistema mouseAction: [ Elegir_Biblioteca crearOpcion_titulo: 'MODIFICAR BIBLIOTECA' ySistema: MiSistema .
+bibliotecaSistema mouseAction: [ Elegir_Biblioteca crearVentana_titulo: 'MODIFICAR BIBLIOTECA' .
 	self cerrar. ].
 atras mouseAction: [  MenuPrincipal crearMenu_sistema:MiSistema. self cerrar].
 ]

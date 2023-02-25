@@ -35,7 +35,7 @@ libro agregarCantidad_paginas: c.
 Libro_Impreso >> aTexto [ 
 |text|.
 text:=super aTexto.
-text:=text,'LIBRO IMPRESO',String cr,'Paginas: ', cantidad_Paginas asString,String cr.
+text:='LIBRO IMPRESO',String cr,text,'Paginas: ', cantidad_Paginas asString,String cr.
 ^text.
 ]
 

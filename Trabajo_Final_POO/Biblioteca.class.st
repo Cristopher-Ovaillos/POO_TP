@@ -69,29 +69,21 @@ Biblioteca >> biblioteca_ID: unID [
 ]
 
 { #category : #propios }
-Biblioteca >> crearPrestamo_Usuario: unUsuario yColLibro: unaColLibro [
-|cLibro cAudioLibro|.
-"separo los libros general y AudioLibro"
-cLibro:=colLibro select:[:libro| libro getTipo].
-cAudioLibro:=colLibro reject:[:libro| libro getTipo].
-""
-self metodoAux_Crear: cLibro yUsuario: unUsuario .
+Biblioteca >> devolverPrestamo:unUsuario [
+"elimino un prestamo para pasarlo aun colPrestamoInactivo"
 
-(unUsuario getTipo)ifFalse:[
-	"es plus"
-	self metodoAux_Crear: cAudioLibro yUsuario: unUsuario .
-	].
-
-
+self eliminarPrestamo: (self retornarPrestamo_Usuario: unUsuario).
 ]
 
-{ #category : #propios }
-Biblioteca >> devolverPrestamo_Usuario: unUsuario [ 
-"devuelve la instancia del prestamo que hizo el usuario.
+{ #category : #'as yet unclassified' }
+Biblioteca >> devolverPrestamoAudioLibro:unUsuario [
+|auxiliar|.
+"elimino un prestamo para pasarlo aun colPrestamoInactivo"
+auxiliar :=self retornarPrestamoAudioLibro_Usuario: unUsuario .
+(auxiliar )ifNotNil: [
+	self eliminarPrestamo: auxiliar .
+].
 
-select: y thenCollect: es un mensaje que se envía a una colección (como un Array) y retorna una nueva colección con los elementos que cumplen con el criterio especificado. En lugar de retornar una copia, retorna una instancia de la misma colección original
-"
-^(colPrestamoActivo) select: [:pres| pres verEstadoUsuario: unUsuario] thenCollect: [:each | each].
 ]
 
 { #category : #propios }
@@ -100,21 +92,17 @@ colLibro remove:unLibro.
 self changed: colLibro .
 ]
 
-{ #category : #propios }
-Biblioteca >> eliminarPrestamoActivo:unPrest [
-"elimino un prestamo para pasarlo aun colPrestamoInactivo"
-|dias|.
-dias:=(diasParaPrestar)asNumber.
-colPrestamoActivo remove:unPrest.
-"modifico la entrega"
-unPrest fechaEntrega.
-(unPrest noContieneAudioLibro )ifTrue:[
-	dias:=(dias/2)truncated.
-	].
-(unPrest getUsuarioP)agregarFechaPosibleMulta:(((unPrest getFechaPrestamo)asDate) + (dias days)).
-colPrestamoInactivo add:unPrest.
+{ #category : #'as yet unclassified' }
+Biblioteca >> eliminarPrestamo:unPres [
+
+
+colPrestamoInactivo add:(unPres).
+colPrestamoActivo remove:(unPres).
+
 self changed:colPrestamoActivo.
 self changed:colPrestamoInactivo.
+
+
 ]
 
 { #category : #observadores }
@@ -158,35 +146,91 @@ diasParaPrestar :=dPrestar.
 ]
 
 { #category : #propios }
-Biblioteca >> metodoAux_Crear:cLibro yUsuario:unUsuario [
+Biblioteca >> metodoAux_Crear: coleccionDeLibros yUsuario: unUsuario [
 
-((cLibro notEmpty ) & ((cLibro size)<=5))ifTrue:[
-self agregarPrestamo: (Prestamo crearP_ColLibro: cLibro  yFPrest:(Date today) yUsuario: unUsuario) .	
+	| prestamo dias |
+	dias := diasParaPrestar asNumber.
+	(coleccionDeLibros notEmpty and: [ coleccionDeLibros size <= 5 ]) 
+		ifFalse: [ ^ self ].
+	prestamo := Prestamo
+		            crearP_ColLibro: coleccionDeLibros
+		            yFPrest: Date today
+		            yUsuario: unUsuario.
+	prestamo contieneAudioLibro ifTrue: [ dias := dias // 2 ].
+	prestamo agregarFechaLimite: Date today + dias days.
+	self agregarPrestamo: prestamo
+]
+
+{ #category : #propios }
+Biblioteca >> moduloCrearPrestamo_Usuario: unUsuario yColLibro: unaColLibro [
+|cLibro cAudioLibro|.
+"separo los libros general y AudioLibro"
+cLibro := unaColLibro select: [:libro | libro tipoLibro].
+cAudioLibro:=unaColLibro reject:[:libro| libro tipoLibro].
+""
+self metodoAux_Crear: cLibro yUsuario: unUsuario .
+
+(unUsuario tipoUsuario )ifFalse:[
+	"es plus"
+	self metodoAux_Crear: cAudioLibro yUsuario: unUsuario .
 	].
 
 
 ]
 
 { #category : #propios }
-Biblioteca >> registrarPrestamoUsuario: unUsuario clibros: unaColLibros [ 
+Biblioteca >> registrarPrestamoUsuario: unUsuario clibros: cLibros [ 
 |instancia |.
 "si devuelve true puede hacer el prestamo"
 (unUsuario verMulta)ifFalse:[
 	"esto deveria devolver nulo para que pueda realizar la promo"
-	(colPrestamoActivo isEmpty)ifTrue:[
-		self crearPrestamo_Usuario: unUsuario  yColLibro: unaColLibros .
-		]ifFalse:[
-		"si ver estadoUsuario es true no puede hacer prestamo"
-	instancia :=((colPrestamoActivo)select:[:prest|(prest verEstadoUsuario: unUsuario)]).	
-	((instancia size)=0)ifTrue:[
-		self crearPrestamo_Usuario: unUsuario  yColLibro: unaColLibros .].	
+	(colPrestamoActivo)ifEmpty: [
+		self moduloCrearPrestamo_Usuario: unUsuario  yColLibro: cLibros .
+		unUsuario agregarFechaPosibleMulta: nil.
+		]ifNotEmpty:  [
+		"si noAptoParaPrestamo es true alguna vez no es apto para poder crear un prestamo"
+	instancia :=((colPrestamoActivo)select:[:prest|(prest noAptoParaPrestamo: unUsuario)]).	
+	(instancia)ifEmpty:  [
+		self moduloCrearPrestamo_Usuario: unUsuario  yColLibro: cLibros .].	
+		"si se puede crear el prestamo es porque cumplio las condiciones necesarias el usuario entonces la fechaMulta lo pongo nulo para que luego al devolver este prestamo sea rellenado nuevamente"
+		unUsuario agregarFechaPosibleMulta: nil.
 		]
-		].	
+	].	
 
 
 ]
 
+{ #category : #'as yet unclassified' }
+Biblioteca >> retornarPrestamoAudioLibro_Usuario: unUsuario [
+     | prestamo |
+    prestamo := colPrestamoActivo detect: [:p | (p mismoUsuarioPrestamo: unUsuario) and: [p contieneAudioLibro]] ifNone: [nil].
+    ^prestamo
+]
+
+{ #category : #propios }
+Biblioteca >> retornarPrestamo_Usuario: unUsuario [
+    | prestamo |
+    prestamo := colPrestamoActivo detect: [:p | (p mismoUsuarioPrestamo: unUsuario) and: [p noContieneAudioLibro]] ifNone: [nil].
+    ^prestamo
+]
+
+{ #category : #'as yet unclassified' }
+Biblioteca >> retornarTodosLosPrestamosDe_unUsuario:unUsuario [
+"devuelve la instancia del prestamo que hizo el usuario.
+
+select: y thenCollect: es un mensaje que se envía a una colección (como un Array) y retorna una nueva colección con los elementos que cumplen con el criterio especificado. En lugar de retornar una copia, retorna una instancia de la misma colección original
+"
+^(colPrestamoActivo) select: [:pres| pres mismoUsuarioPrestamo:  unUsuario] thenCollect: [:each | each].
+]
+
+{ #category : #'as yet unclassified' }
+Biblioteca >> usuarios_con_prestamos_vencidos [
+	| usuarios_retrasados |
+	usuarios_retrasados := colPrestamoActivo select: [:prestamo | prestamo huboVencimiento] thenCollect: [:prestamo | prestamo getUsuarioP].
+	^ usuarios_retrasados
+]
+
 { #category : #propios }
 Biblioteca >> verUsuarioRealizoPrestamo:unUsuario [
-^(((colPrestamoActivo )select:[:prest|(prest verEstadoUsuario: unUsuario)])isNotEmpty).
+^colPrestamoActivo anySatisfy: [:prest | prest mismoUsuarioPrestamo: unUsuario]
 ]
