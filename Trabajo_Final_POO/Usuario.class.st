@@ -110,6 +110,11 @@ Usuario >> getDni [
 ^dni.
 ]
 
+{ #category : #'as yet unclassified' }
+Usuario >> getMulta [ 
+^fechaMulta .
+]
+
 { #category : #Visualizadores }
 Usuario >> getNombre [ 
 ^nombre .

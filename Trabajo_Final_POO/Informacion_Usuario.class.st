@@ -19,7 +19,7 @@ self mostrarInformacion;agregarBoton  .
 Informacion_Usuario >> mostrarInformacion [
 |listaInformacion listaPrestamo auxiliar botonDer botonIzq posItem dimCol titulo|.
 titulo:=StringMorph new.
-titulo contents: 'PRESTAMOS QUE EL USUARIO REALIZO'.
+titulo contents: 'PRESTAMOS REALIZADOS/<-,-> PARA CAMBIAR LA BIBLIOTECA DONDE HIZO PRESTAMO'.
 auxiliar:=MiSistema bibliotecaDondeRealizoPrestamo: UsuarioRecibido .
 posItem :=1.
 dimCol := auxiliar size.
