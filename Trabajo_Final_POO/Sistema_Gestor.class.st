@@ -258,8 +258,17 @@ multaKDias :=7.
 ]
 
 { #category : #'as yet unclassified' }
-Sistema_Gestor >> verSiEsFecha: unaFecha [
-"$ se utiliza para especificar caracteres especiales."
+Sistema_Gestor >> verSiEsFecha: unaAnio [
+    ^(unaAnio allSatisfy: [:c | c isDigit])
+        ifTrue: [
+            unaAnio size = 4
+                and: [
+                    (unaAnio asNumber between: 1 and: 9999)
+                ]
+        ] ifFalse: [false].
+
+
+"""$ se utiliza para especificar caracteres especiales.""
 ^(unaFecha allSatisfy: [:c | c isDigit or: [c = $-]])
     ifTrue: [
         (unaFecha size = 10)
@@ -269,7 +278,7 @@ Sistema_Gestor >> verSiEsFecha: unaFecha [
                     (unaFecha at: 8) = $-
                 ]
             ]
-    ]ifFalse: [false].
+    ]ifFalse: [false]."
 ]
 
 { #category : #'as yet unclassified' }

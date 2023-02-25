@@ -172,7 +172,7 @@ AgregarLibro >> agregarTitulo [
 |titulo1 titulo2 titulo3 titulo4|.
 titulo1 :='Ingrese el nombre' asMorph .
 titulo2:='Ingrese la editorial' asMorph .
-titulo3:='ingrese el Año de edicion |YYYY-MM-DD' asMorph.
+titulo3:='ingrese el Año de edicion |YYYY' asMorph.
 titulo4 :='Seleccione el tipo del libro' asMorph.
 
 self addMorph:titulo1;addMorph:titulo2;addMorph:titulo3; addMorph: titulo4.
