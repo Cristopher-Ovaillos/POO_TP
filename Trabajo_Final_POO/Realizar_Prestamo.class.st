@@ -46,7 +46,8 @@ self agregarBotones .
 
 { #category : #propios }
 Realizar_Prestamo >> realizarPrestamo_bibliteca: biblio [
-|lista listaLibro  librosSeleccionados contadorLibro contadorAudio puedePrestamo terminarPrestamo datoBiblioteca|.
+|lista listaLibro  librosSeleccionados contadorLibro contadorAudio puedePrestamo terminarPrestamo datoBiblioteca vencioLaCuota|.
+vencioLaCuota :=UsuarioRecibido vencioCuota.
 datoBiblioteca :=StringMorph new.
 datoBiblioteca contents: (biblio getNombreEstablecimiento asString),' PRESTA EL LIBRO DURANTE: ' ,(biblio getFechaDiasParaPrestar)asString.
 contadorLibro :=0.
@@ -80,12 +81,13 @@ datoBiblioteca position:listaLibro topLeft-(0@20).
 self addMorph:elegirLibro;addMorph:listaLibro;addMorph:terminarElegir;addMorph: datoBiblioteca .
 "accion boton"
 "NOTIFICACIONES"
-(UsuarioRecibido verMulta) ifFalse: [
+(UsuarioRecibido verMulta)ifFalse: [
     (biblio verUsuarioRealizoPrestamo:UsuarioRecibido) ifTrue: [  
         error contents:'EL USUARIO YA REALIZO UN PRESTAMO'.
         self addMorph:error.
         terminarPrestamo := false.
     ] ifFalse: [
+	
         elegirLibro mouseAction: [
             "veo el item seleccionado no es nulo"
             (listaLibro selectedItem isNotNil) ifTrue: [
@@ -107,26 +109,33 @@ self addMorph:elegirLibro;addMorph:listaLibro;addMorph:terminarElegir;addMorph: 
                         puedePrestamo := false.
                     ]
                 ] ifFalse: [ 
-                    "usuario plus"
-                    tipo ifTrue: [  
-                        "esLibro"
-                        (contadorLibro >= 5) ifTrue: [
-                            "supero el max"
-                            puedePrestamo := false. 
-                            error contents:'supero el maximo de libros'.
-                        ] ifFalse: [ 
-                            contadorLibro := contadorLibro + 1.
-                        ]
-                    ] ifFalse: [  
-                        "es audio libro"
-                        (contadorAudio  >=5) ifTrue: [
-                            "supero el max"
-                            puedePrestamo := false.
-                            error contents:'supero el maximo de Audiolibros'.
-                        ] ifFalse: [
-                            contadorAudio := contadorAudio + 1.
-                        ]			
-                    ]	
+	
+							vencioLaCuota ifTrue:[
+								error contents:'VENCIO CUOTA | NO ES POSIBLE AGREGAR AUDIOLIBROS AL PRESTAMO'.
+								 puedePrestamo := false.
+								]ifFalse:[
+								 	 "usuario plus"
+                 			  	 tipo ifTrue: [  
+                    		  	  "esLibro"
+                       			 (contadorLibro >= 5) ifTrue: [
+                       		  		   "supero el max"
+                       	 		 	   puedePrestamo := false. 
+                         			   error contents:'supero el maximo de libros'.
+                       			 ] ifFalse: [ 
+                           			 contadorLibro := contadorLibro + 1.
+                        			]
+                    			] ifFalse: [  
+                       		 	"es audio libro"
+                        			(contadorAudio  >=5) ifTrue: [
+                           			 "supero el max"
+                          		 	 puedePrestamo := false.
+                           			 error contents:'supero el maximo de Audiolibros'.
+                       		 	] ifFalse: [
+                          		 	 contadorAudio := contadorAudio + 1.
+                        			]			
+                   		 	]	
+								].
+                  
                 ].
                 self addMorph:error.
                 (puedePrestamo) ifTrue: [

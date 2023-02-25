@@ -82,5 +82,5 @@ UsuarioPlus >> tipoUsuario [
 { #category : #propios }
 UsuarioPlus >> vencioCuota [
 "vencio"
-^ (Date today> fechaVencimientoCuota) .
+^ (Date today>fechaVencimientoCuota) .
 ]
