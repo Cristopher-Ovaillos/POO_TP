@@ -33,7 +33,7 @@ botonTipo:=BotonAccion crearBoton_nomb: '→' yDimension:20@15  yColor: Color pi
 botonTipo position: tipoLibro position +(150@2).
 agregarAutor :=BotonAccion crearBoton_nomb: 'AgregarAutor' yDimension:100@20   yColor: Color pink.
 agregarAutor position: registroAutor position +(120@110).
-advertencia position:tipoLibro position +(0@220).
+advertencia position:tipoLibro position +(0@180).
 botonAgregar :=BotonAccion crearBoton_nomb: 'AGREGAR' yDimension:100@20  yColor: Color pink.
 botonAgregar position: 385@415.
 self addMorph:botonAgregar.
@@ -110,6 +110,7 @@ botonAgregar mouseAction:[
 			self removeMorph: datoExtra.
 			registroAutor setText:''.
 			colA :=nil.
+			colA :=OrderedCollection new.
 			string :=''.
 			datoExtra clear.
 			datoNombre clear.
@@ -120,7 +121,7 @@ botonAgregar mouseAction:[
 		
 	 ]ifFalse:[
 		"no es una fecha"
-		advertencia contents:'No es una fecha'.
+		advertencia contents:'No es una AÑO'.
 		self addMorph:advertencia.
 		].	
 	"FIN DEL MENSAJE MiSistema verSiEsFecha:(datoAnioEd input)"	

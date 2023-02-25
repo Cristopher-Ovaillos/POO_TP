@@ -18,7 +18,7 @@ Modificar_bibliteca >> agregarBotones [
 titulo:=StringMorph new.
 titulo contents:'INFORMACION/PRESTAMOS/USUARIOS ATRASADOS '.
 	botonAgregar := BotonAccion
-		                crearBoton_nomb: 'AGREGAR LIBROS A LA BIBLIOTECA'
+		                crearBoton_nomb: 'AGREGAR y VER LIBROS DE LA BIBLIOTECA'
 		                yDimension: 400 @ 50
 		                yColor: Color pink.
 	botonEliminar := BotonAccion
@@ -77,7 +77,7 @@ titulo contents:'INFORMACION/PRESTAMOS/USUARIOS ATRASADOS '.
 	botonInfo mouseAction: [datosBiblioteca setText:(BiblioRe aTexto). 
 										botonInfo hide.botonPrestamos show.botonUsuarioRetrasados hide. ].
 	
-	botonPrestamos mouseAction:[datosBiblioteca setText:(MiSistema colATexto:(BiblioRe 												getPrestamo)),'___________________________________________________',String cr.
+	botonPrestamos mouseAction:[datosBiblioteca setText:(MiSistema colATexto:(BiblioRe 	getPrestamo)),'___________________________________________________',String cr.
 													botonInfo hide.botonPrestamos hide.botonUsuarioRetrasados show].
 	botonUsuarioRetrasados mouseAction: [  
 		datosBiblioteca setText:(MiSistema colATexto:(BiblioRe usuarios_con_prestamos_vencidos) ).
