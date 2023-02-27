@@ -7,11 +7,11 @@ Class {
 { #category : #'as yet unclassified' }
 BaselineOfTrabajo_Final_POO >> baseline: spec [
 <baseline>
-spec for:#pharo
+spec for:#common
 do:[
 	"the main code of the baseline will go here"
 	spec
-		"Packages" spec package: 'Trabajo_Final_POO'.
+		 package: 'Trabajo_Final_POO'.
 
 	]
 ]
