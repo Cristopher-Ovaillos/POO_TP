@@ -10,9 +10,8 @@ BaselineOfTrabajo_Final_POO >> baseline: spec [
 	<baseline>
 	spec for: #pharo do: [
     spec
-        package: 'Trabajo_Final_POO-Vista';
-	package: 'Trabajo_Final_POO-Modelo';
-	package: 'Trabajo_Final_POO-Elementos'.
+        package: 'Trabajo_Final_POO'
+	.
 ].
 
 spec for: #common do: [
