@@ -17,6 +17,6 @@ do:[
 ]
 
 { #category : #ConfigurationOfFoo }
-BaselineOfTrabajo_Final_POO >> projectClassMethodSource [ 
+BaselineOfTrabajo_Final_POO >> projectClass [
 ^MetacelloCypressBaselineProject.
 ]
