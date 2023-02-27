@@ -8,9 +8,15 @@ Class {
 BaselineOfTrabajo_Final_POO >> baseline: spec [
 
 	<baseline>
-	spec
-		for: #common
-		do: [ "Packages" spec package: 'Trabajo_Final_POO' ]
+	spec for: #pharo do: [
+    spec
+        package: 'Trabajo_Final_POO'.
+].
+
+spec for: #common do: [
+    spec
+        package: 'PetitParser'.
+].
 ]
 
 { #category : #accessing }
