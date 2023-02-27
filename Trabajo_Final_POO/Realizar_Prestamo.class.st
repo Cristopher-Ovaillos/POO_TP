@@ -47,7 +47,12 @@ self agregarBotones .
 { #category : #propios }
 Realizar_Prestamo >> realizarPrestamo_bibliteca: biblio [
 |lista listaLibro  librosSeleccionados contadorLibro contadorAudio puedePrestamo terminarPrestamo datoBiblioteca vencioLaCuota|.
-vencioLaCuota :=UsuarioRecibido vencioCuota.
+vencioLaCuota:=false. 
+(UsuarioRecibido tipoUsuario )ifFalse:[
+	"osea es plus"
+	vencioLaCuota :=UsuarioRecibido vencioCuota.
+	].
+
 datoBiblioteca :=StringMorph new.
 datoBiblioteca contents: (biblio getNombreEstablecimiento asString),' PRESTA EL LIBRO DURANTE: ' ,(biblio getFechaDiasParaPrestar)asString.
 contadorLibro :=0.
