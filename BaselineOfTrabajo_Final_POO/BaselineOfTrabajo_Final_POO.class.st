@@ -1,6 +1,6 @@
 Class {
 	#name : #'BaselineOfTrabajo_Final_POO',
-	#superclass : #Object,
+	#superclass : #BaselineOf,
 	#category : #'BaselineOfTrabajo_Final_POO'
 }
 
