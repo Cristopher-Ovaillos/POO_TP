@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-BaselineOfTrabajo_Final_POO >> baselina: spec [
+BaselineOfTrabajo_Final_POO >> baseline: spec [
 <baseline>
 spec for:#pharo
 do:[
