@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #baselines }
-BaselineOfTrabajo_Final_POO >> baseLine: spec [
+BaselineOfTrabajo_Final_POO >> baseline: spec [
 
 	<baseline>
 	spec
